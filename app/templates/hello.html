@@ -1,0 +1,67 @@
+
+<html>
+    <head>      
+      <title>AQSlacker</title>
+      <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/main.css') }}">
+    </head>
+    <body>
+        <div>AQSlacker: <a href="/">Home</a></div>
+        <hr>
+        {% block content %}
+    <h1>Check who's slacking off</h1>
+    <div><img src="{{url_for('static',filename='images/get-to-work-work.gif')}}"/> </div>
+    <form action="/" method="POST" >
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.wallet.label }}<br>
+            {{ form.wallet(size=32) }}
+          {% for error in form.wallet.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    {% if herodata %}  
+    <table id="excelDataTable" class="styled-table" border="1">
+    <thead class="thead-dark">
+    <tr>
+      {% for key in herodata[0].keys() %}
+      {% if key == "staminaFullAt" %}
+      <th class="header__item">IdleMinutes</th>
+      {% else %}
+      <th class="header__item">{{key}}</th>
+      {% endif %}
+      {% endfor %}
+    </tr>
+    </thead>  
+    {% for item in herodata %}
+    <tr>
+        <td>{{item.id}}</td>
+        <td>{{item.mainClass}}</td>
+        <td>{{item.staminaFullAt}}</td>
+        <td>{{item.summons}}</td>
+        <td>{{item.generation}}</td>
+        <td>{{item.profession}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    {% else %}
+      {% if submitted %}
+        <div><img src="{{url_for('static',filename='images/bugsbunny-tired.gif')}}"/> </div>
+      {% endif %}
+    {% endif %}
+      
+      <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+{% endblock %}
+      
+    </body>
+</html>
