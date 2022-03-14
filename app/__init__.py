@@ -4,4 +4,3 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = "sadhfjaslkdfhasudfh"
 #bootstrap = Bootstrap(app)
 from app import routes
-app.run()
